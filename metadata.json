@@ -1,0 +1,5 @@
+{
+  "name": "CT Dashboard",
+  "description": "A sleek and modern dashboard/admin panel built with React and Tailwind CSS, featuring advanced data visualizations and AI-powered insights from Gemini.",
+  "requestFramePermissions": []
+}
