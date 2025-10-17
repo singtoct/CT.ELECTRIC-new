@@ -4,9 +4,10 @@ import { useTranslation } from '../hooks/useTranslation';
 
 interface RecentOrdersTableProps {
   orders: PackingOrder[];
+  onOrderSelect: (order: PackingOrder) => void;
 }
 
-const RecentOrdersTable: React.FC<RecentOrdersTableProps> = ({ orders }) => {
+const RecentOrdersTable: React.FC<RecentOrdersTableProps> = ({ orders, onOrderSelect }) => {
   const { t } = useTranslation();
   return (
     <div className="bg-slate-800 p-6 rounded-xl shadow-lg border border-slate-700 h-full">
@@ -22,7 +23,11 @@ const RecentOrdersTable: React.FC<RecentOrdersTableProps> = ({ orders }) => {
           </thead>
           <tbody>
             {orders.map((order) => (
-              <tr key={order.id} className="border-b border-slate-700 hover:bg-slate-700/50">
+              <tr 
+                key={order.id} 
+                className="border-b border-slate-700 hover:bg-slate-700/50 cursor-pointer"
+                onClick={() => onOrderSelect(order)}
+              >
                 <td className="py-3 pr-2 font-medium text-white truncate max-w-[150px]">{order.name}</td>
                 <td className="py-3 px-2 text-gray-300 text-right">{order.quantity.toLocaleString()}</td>
                 <td className="py-3 pl-2 text-gray-300">{new Date(order.dueDate).toLocaleDateString('en-CA')}</td>

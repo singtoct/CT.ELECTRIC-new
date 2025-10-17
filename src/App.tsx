@@ -4,6 +4,7 @@ import Header from './components/Header';
 import StatCard from './components/StatCard';
 import SalesChart from './components/SalesChart';
 import RecentOrdersTable from './components/RecentOrdersTable';
+import OrderDetailPanel from './components/OrderDetailPanel'; // Import the new component
 import { MOCK_PACKING_ORDERS } from './constants';
 import { ClipboardListIcon, SparklesIcon } from './constants';
 import type { PackingOrder, Stat, DailyQuantity } from './types';
@@ -12,10 +13,19 @@ import { useTranslation } from './hooks/useTranslation';
 
 const AppContent: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [selectedOrder, setSelectedOrder] = useState<PackingOrder | null>(null);
   const { t } = useTranslation();
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
+  };
+
+  const handleOrderSelect = (order: PackingOrder) => {
+    setSelectedOrder(order);
+  };
+
+  const handleClosePanel = () => {
+    setSelectedOrder(null);
   };
 
   // --- Data Processing ---
@@ -79,12 +89,13 @@ const AppContent: React.FC = () => {
               </div>
               
               <div className="lg:col-span-1">
-                <RecentOrdersTable orders={upcomingOrders} />
+                <RecentOrdersTable orders={upcomingOrders} onOrderSelect={handleOrderSelect} />
               </div>
             </div>
           </div>
         </main>
       </div>
+      <OrderDetailPanel order={selectedOrder} onClose={handleClosePanel} />
     </div>
   );
 };
