@@ -1,6 +1,5 @@
 import React from 'react';
 import type { PackingOrder } from '../types';
-// FIX: Changed the import for `TranslationKey` to `../i18n/translations` as it is not exported from `../hooks/useTranslation`.
 import { useTranslation } from '../hooks/useTranslation';
 import type { TranslationKey } from '../i18n/translations';
 
@@ -11,8 +10,8 @@ interface OrderDetailPanelProps {
 
 const DetailRow: React.FC<{ label: string; value: React.ReactNode }> = ({ label, value }) => (
   <div className="py-3 sm:grid sm:grid-cols-3 sm:gap-4">
-    <dt className="text-sm font-medium text-gray-400">{label}</dt>
-    <dd className="mt-1 text-sm text-gray-200 sm:mt-0 sm:col-span-2 break-words">{value}</dd>
+    <dt className="text-sm font-medium text-gray-500">{label}</dt>
+    <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 break-words">{value}</dd>
   </div>
 );
 
@@ -21,22 +20,18 @@ const OrderDetailPanel: React.FC<OrderDetailPanelProps> = ({ order, onClose }) =
 
   const getStatusClass = (status?: PackingOrder['status']) => {
     switch (status) {
-      case 'Completed': return 'bg-green-500/20 text-green-400';
+      case 'Completed': return 'bg-green-100 text-green-800';
       case 'Open':
-      case 'Pending': return 'bg-yellow-500/20 text-yellow-400';
-      case 'Cancelled': return 'bg-red-500/20 text-red-400';
-      default: return 'bg-gray-500/20 text-gray-400';
+      case 'Pending': return 'bg-yellow-100 text-yellow-800';
+      case 'Cancelled': return 'bg-red-100 text-red-800';
+      default: return 'bg-gray-100 text-gray-800';
     }
   };
   
   const renderValue = (key: keyof PackingOrder, value: any) => {
-    if (value === undefined || value === null || value === '') return 'N/A';
+    if (value === undefined || value === null || value === '') return <span className="text-gray-400">N/A</span>;
     if (key === 'status') {
-      return (
-        <span className={`px-2 py-1 rounded-full text-xs font-semibold ${getStatusClass(value)}`}>
-          {value}
-        </span>
-      );
+      return <span className={`px-2 py-1 rounded-full text-xs font-bold ${getStatusClass(value)}`}>{value}</span>;
     }
     if (typeof value === 'number') return value.toLocaleString();
     if (key === 'dueDate') return new Date(value).toLocaleDateString('en-CA');
@@ -59,29 +54,23 @@ const OrderDetailPanel: React.FC<OrderDetailPanelProps> = ({ order, onClose }) =
 
   return (
     <>
-      {/* Backdrop */}
       <div 
-        className={`fixed inset-0 bg-black/60 z-30 transition-opacity duration-300 ${order ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+        className={`fixed inset-0 bg-black/30 z-30 transition-opacity duration-300 ${order ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
         onClick={onClose}
       ></div>
-
-      {/* Side Panel */}
-      <div className={`fixed top-0 right-0 h-full w-full max-w-md bg-slate-800 border-l border-slate-700 shadow-2xl transform transition-transform duration-300 ease-in-out z-40 ${order ? 'translate-x-0' : 'translate-x-full'}`}>
+      <div className={`fixed top-0 right-0 h-full w-full max-w-md bg-white border-l border-gray-200 shadow-2xl transform transition-transform duration-300 ease-in-out z-40 ${order ? 'translate-x-0' : 'translate-x-full'}`}>
         <div className="flex flex-col h-full">
-            {/* Header */}
-            <div className="flex items-center justify-between p-4 border-b border-slate-700 flex-shrink-0">
-                <h2 className="text-xl font-semibold text-white">{t('orderDetails')}</h2>
-                <button onClick={onClose} className="p-1 rounded-full text-gray-400 hover:bg-slate-700 hover:text-white transition-colors">
+            <div className="flex items-center justify-between p-4 border-b border-gray-200 flex-shrink-0">
+                <h2 className="text-lg font-semibold text-gray-900">{t('orderDetails')}</h2>
+                <button onClick={onClose} className="p-1 rounded-full text-gray-400 hover:bg-gray-200 hover:text-gray-800 transition-colors">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </button>
             </div>
-
-            {/* Content */}
             <div className="flex-grow p-6 overflow-y-auto">
                 {order && (
-                    <dl className="divide-y divide-slate-700">
+                    <dl className="divide-y divide-gray-200">
                         {orderDetailsMap.map(({ key, labelKey }) => (
                            <DetailRow key={key} label={t(labelKey)} value={renderValue(key, order[key])} />
                         ))}

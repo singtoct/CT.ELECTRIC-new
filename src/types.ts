@@ -1,17 +1,17 @@
-// FIX: Imported React to resolve the 'Cannot find namespace React' error for React.ReactNode type.
 import React from 'react';
 
 export interface Stat {
   title: string;
-  value: string;
-  change?: string;
-  changeType?: 'increase' | 'decrease';
+  value: string | React.ReactNode;
   icon: React.ReactNode;
+  bgColor?: string;
+  textColor?: string;
 }
 
-export interface DailyQuantity {
+export interface ProductionData {
   name: string;
-  quantity: number;
+  produced: number;
+  waste: number;
 }
 
 export interface PackingOrder {
@@ -26,10 +26,4 @@ export interface PackingOrder {
   lotNumber?: string;
   status?: 'Open' | 'Completed' | 'Cancelled' | 'Pending';
   quantityDelivered?: number;
-}
-
-export interface DashboardData {
-    stats: Stat[];
-    salesData: DailyQuantity[];
-    orders: PackingOrder[];
 }

@@ -11,6 +11,7 @@ const App: React.FC = () => {
     <Routes>
       <Route element={<MainLayout />}>
         <Route path="/" element={<DashboardPage />} />
+        {/* Placeholder routes for other pages to ensure they adopt the new theme */}
         <Route path="/production-schedule" element={<ProductionSchedulePage />} />
         <Route path="/reports" element={<ReportsPage />} />
         <Route path="/products" element={<ProductManagementPage />} />

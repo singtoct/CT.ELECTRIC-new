@@ -1,37 +1,6 @@
-import React from 'react';
 import type { PackingOrder } from './types';
 
-export const DollarSignIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8v1m0 10v1m0-7h.01M6 12h.01M18 12h.01M6 9h.01M18 9h.01M6 15h.01M18 15h.01" />
-  </svg>
-);
-
-export const ShoppingCartIcon = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-    </svg>
-);
-
-export const ClipboardListIcon = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
-    </svg>
-);
-
-export const CubeIcon = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-14L4 7m0 10l8 4m0-14v10" />
-    </svg>
-);
-
-export const SparklesIcon = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
-        <path fillRule="evenodd" d="M5 2a1 1 0 00-1 1v1.586l-1.293 1.293a1 1 0 101.414 1.414L5 6.414V8a1 1 0 002 0V6.414l1.293 1.293a1 1 0 101.414-1.414L8 4.586V3a1 1 0 00-2 0V1.586l-1.293-1.293a1 1 0 00-1.414 0L5 2zm5 10a1 1 0 00-1 1v1.586l-1.293 1.293a1 1 0 101.414 1.414L10 16.414V18a1 1 0 002 0v-1.586l1.293 1.293a1 1 0 101.414-1.414L13 14.586V13a1 1 0 00-2 0v-1.586l-1.293-1.293a1 1 0 00-1.414 0L10 12zm-5-5a1 1 0 00-1 1v1.586l-1.293 1.293a1 1 0 101.414 1.414L5 11.414V13a1 1 0 002 0v-1.586l1.293 1.293a1 1 0 101.414-1.414L8 9.586V8a1 1 0 00-2 0V6.586l-1.293-1.293a1 1 0 00-1.414 0L5 7z" clipRule="evenodd" />
-    </svg>
-);
-
-
+// FIX: Moved MOCK_PACKING_ORDERS from the root constants.tsx to src/constants.tsx to resolve module not found errors.
 export const MOCK_PACKING_ORDERS: PackingOrder[] = [
     {
       "id": "0ca4f17c-eced-4217-abd7-2db801f0d908",

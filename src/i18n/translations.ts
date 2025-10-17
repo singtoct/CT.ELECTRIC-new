@@ -2,115 +2,151 @@ export type Language = 'en' | 'th' | 'zh';
 
 export const translations = {
   en: {
-    // Sidebar & Page Titles
+    // Sidebar
     dashboard_title: 'Dashboard',
-    productionSchedule: 'Production Schedule',
-    reports: 'Reports',
-    productManagement: 'Product Management',
+    salesAndPlanning: 'Sales & Planning',
+    customerManagement: 'Customer Management',
+    productionPlanning: 'Production Planning',
+    productionLine: 'Production Line',
+    machineStatus: 'Machine Status',
+    kanban: 'Kanban Board',
+    productionLogs: 'Production Logs',
+    warehouseAndDispatch: 'Warehouse & Dispatch',
+    qualityControl: 'Quality Control (QC)',
+    finishedGoods: 'Finished Goods',
+    analyticsAndReports: 'Analytics & Reports',
+    settings: 'Settings',
+    search: 'Search...',
 
-    // Dashboard Page
-    aiProductionForecast: 'AI Production Forecast',
-    qcTasks: 'QC Tasks',
-    latest7DaysQuantity: 'Production Quantity Last 7 Days',
-    upcomingOrders: 'Upcoming Production Orders',
+    // Dashboard
+    aiProductionForecast: 'AI Production Planning',
+    createSmartPlan: 'Create intelligent production plan',
+    navigateToPlan: 'Go to planning board to start',
+    aiMaterialForecast: 'AI Material Forecast',
+    upcomingOrders5: 'Upcoming Orders (5 Items)',
+    quantity: 'Qty',
+    qcTasks: 'Pending QC',
+    items: 'Items',
+    lowStockAlert: 'Low Stock Alert',
+    stockNormal: 'Stock levels are normal',
+    stockLowAction: 'Some items are running low. Please check inventory.',
+    productionSummary7Days: 'Production Summary (Last 7 Days)',
+    produced: 'Produced',
+    waste: 'Waste',
 
-    // Production Schedule Page
-    allProductionOrders: 'All Production Orders',
-    searchByProductName: 'Search by product name...',
-    
-    // Shared Table Headers
+    // FIX: Added missing translation keys for OrderDetailPanel and other components.
+    orderDetails: 'Order Details',
     productName: 'Product Name',
-    quantity: 'Quantity',
     dueDate: 'Due Date',
     status: 'Status',
-    lotNumber: 'Lot Number',
-    
-    // Order Detail Panel
-    orderDetails: 'Order Details',
     salePrice: 'Sale Price',
-    quantityDelivered: 'Quantity Delivered',
+    quantityDelivered: 'Qty Delivered',
     color: 'Color',
     stock: 'Stock',
+    lotNumber: 'Lot Number',
     id: 'Order ID',
     customerId: 'Customer ID',
-    
-    // Placeholders
-    pageUnderConstruction: 'Page Under Construction',
-    search: 'Search...',
+    pageUnderConstruction: 'This page is under construction.',
+    productManagement: 'Product Management',
+    searchByProductName: 'Search by product name...',
   },
   th: {
-    // Sidebar & Page Titles
+    // Sidebar
     dashboard_title: 'ภาพรวมระบบ',
-    productionSchedule: 'ตารางการผลิต',
-    reports: 'รายงาน',
-    productManagement: 'จัดการสินค้า',
-    
-    // Dashboard Page
-    aiProductionForecast: 'AI พยากรณ์แผนการผลิต',
-    qcTasks: 'งานตรวจสอบ (QC)',
-    latest7DaysQuantity: 'สรุปปริมาณสินค้า 7 วันล่าสุด',
-    upcomingOrders: 'การผลิตที่ออกคำสั่งล่วงหน้า',
-    
-    // Production Schedule Page
-    allProductionOrders: 'รายการคำสั่งผลิตทั้งหมด',
-    searchByProductName: 'ค้นหาด้วยชื่อสินค้า...',
+    salesAndPlanning: 'การขายและวางแผน',
+    customerManagement: 'จัดการลูกค้า',
+    productionPlanning: 'แผนการผลิต/ออเดอร์',
+    productionLine: 'สายการผลิต',
+    machineStatus: 'สถานะเครื่องจักร',
+    kanban: 'Kanban Board',
+    productionLogs: 'บันทึกการผลิต (เม็ด)',
+    warehouseAndDispatch: 'คลังสินค้าและการจัดส่ง',
+    qualityControl: 'ควบคุมคุณภาพ (QC)',
+    finishedGoods: 'สต็อกสินค้าสำเร็จรูป',
+    analyticsAndReports: 'การจัดการและวิเคราะห์',
+    settings: 'ตั้งค่าระบบ',
+    search: 'ค้นหา...',
 
-    // Shared Table Headers
-    productName: 'ชื่อสินค้า',
+    // Dashboard
+    aiProductionForecast: 'AI วางแผนการผลิต',
+    createSmartPlan: 'สร้างแผนการผลิตอัจฉริยะ',
+    navigateToPlan: 'ไปที่หน้าแผนการผลิตเพื่อใช้งาน',
+    aiMaterialForecast: 'AI คาดการณ์วัตถุดิบ',
+    upcomingOrders5: 'ออเดอร์ใกล้ครบกำหนด (5 รายการ)',
     quantity: 'จำนวน',
-    dueDate: 'กำหนดส่ง',
-    status: 'สถานะ',
-    lotNumber: 'ล็อตนัมเบอร์',
+    qcTasks: 'งานรอตรวจสอบ (QC)',
+    items: 'รายการ',
+    lowStockAlert: 'สต็อกสินค้าใกล้หมด',
+    stockNormal: 'สต็อกสินค้าอยู่ในระดับปกติ',
+    stockLowAction: 'มีสินค้าบางรายการใกล้หมด กรุณาตรวจสอบ',
+    productionSummary7Days: 'สรุปการผลิต 7 วันล่าสุด',
+    produced: 'ผลิตได้',
+    waste: 'ของเสีย',
 
-    // Order Detail Panel
-    orderDetails: 'รายละเอียดคำสั่งผลิต',
+    // FIX: Added missing translation keys for OrderDetailPanel and other components.
+    orderDetails: 'รายละเอียดออเดอร์',
+    productName: 'ชื่อสินค้า',
+    dueDate: 'วันที่ครบกำหนด',
+    status: 'สถานะ',
     salePrice: 'ราคาขาย',
-    quantityDelivered: 'จำนวนที่ส่งแล้ว',
+    quantityDelivered: 'จำนวนที่จัดส่งแล้ว',
     color: 'สี',
     stock: 'สต็อก',
-    id: 'รหัสคำสั่งผลิต',
+    lotNumber: 'เลขล็อต',
+    id: 'รหัสออเดอร์',
     customerId: 'รหัสลูกค้า',
-
-    // Placeholders
     pageUnderConstruction: 'หน้านี้อยู่ระหว่างการพัฒนา',
-    search: 'ค้นหา...',
+    productManagement: 'การจัดการสินค้า',
+    searchByProductName: 'ค้นหาด้วยชื่อสินค้า...',
   },
   zh: {
-    // Sidebar & Page Titles
+    // Sidebar
     dashboard_title: '仪表板',
-    productionSchedule: '生产计划',
-    reports: '报告',
-    productManagement: '产品管理',
+    salesAndPlanning: '销售与计划',
+    customerManagement: '客户管理',
+    productionPlanning: '生产计划/订单',
+    productionLine: '生产线',
+    machineStatus: '机器状态',
+    kanban: '看板',
+    productionLogs: '生产日志',
+    warehouseAndDispatch: '仓库与配送',
+    qualityControl: '质量控制(QC)',
+    finishedGoods: '成品库存',
+    analyticsAndReports: '分析与报告',
+    settings: '系统设置',
+    search: '搜索...',
 
-    // Dashboard Page
-    aiProductionForecast: 'AI 生产预测',
-    qcTasks: '质检任务',
-    latest7DaysQuantity: '最近7天产量总结',
-    upcomingOrders: '即将开始的生产订单',
-
-    // Production Schedule Page
-    allProductionOrders: '所有生产订单',
-    searchByProductName: '按产品名称搜索...',
-
-    // Shared Table Headers
-    productName: '产品名称',
+    // Dashboard
+    aiProductionForecast: 'AI 生产计划',
+    createSmartPlan: '创建智能生产计划',
+    navigateToPlan: '转到计划板开始',
+    aiMaterialForecast: 'AI 原料预测',
+    upcomingOrders5: '即将到期的订单 (5项)',
     quantity: '数量',
-    dueDate: '交货日期',
-    status: '状态',
-    lotNumber: '批号',
+    qcTasks: '待质检任务',
+    items: '项',
+    lowStockAlert: '低库存警报',
+    stockNormal: '库存水平正常',
+    stockLowAction: '部分物料库存不足，请检查。',
+    productionSummary7Days: '最近7天生产总结',
+    produced: '产量',
+    waste: '废品',
 
-    // Order Detail Panel
+    // FIX: Added missing translation keys for OrderDetailPanel and other components.
     orderDetails: '订单详情',
+    productName: '产品名称',
+    dueDate: '到期日',
+    status: '状态',
     salePrice: '售价',
     quantityDelivered: '已交货数量',
     color: '颜色',
     stock: '库存',
+    lotNumber: '批号',
     id: '订单ID',
     customerId: '客户ID',
-
-    // Placeholders
-    pageUnderConstruction: '页面正在建设中',
-    search: '搜索...',
+    pageUnderConstruction: '此页面正在建设中。',
+    productManagement: '产品管理',
+    searchByProductName: '按产品名称搜索...',
   },
 };
 

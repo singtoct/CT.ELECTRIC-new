@@ -5,9 +5,9 @@ const ReportsPage: React.FC = () => {
   const { t } = useTranslation();
   return (
     <div className="container mx-auto">
-        <h2 className="text-2xl font-semibold text-white mb-6">{t('reports')}</h2>
-        <div className="bg-slate-800 p-6 rounded-xl shadow-lg border border-slate-700 text-center">
-            <p className="text-gray-400">{t('pageUnderConstruction')}</p>
+        <h1 className="text-2xl font-bold text-gray-800 mb-6">{t('analyticsAndReports')}</h1>
+        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 text-center">
+            <p className="text-gray-500">{t('pageUnderConstruction')}</p>
         </div>
     </div>
   );

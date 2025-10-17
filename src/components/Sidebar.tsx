@@ -1,74 +1,122 @@
-import React from 'react';
-import { NavLink } from 'react-router-dom';
+import React, { useState } from 'react';
+import { NavLink, useLocation } from 'react-router-dom';
 import { useTranslation } from '../hooks/useTranslation';
+import type { TranslationKey } from '../i18n/translations';
 
-interface SidebarProps {
-  isOpen: boolean;
+// Icon components - these would typically be in separate files
+const Icon: React.FC<{ path: string }> = ({ path }) => <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d={path} /></svg>;
+const DashboardIcon = () => <Icon path="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />;
+const SalesIcon = () => <Icon path="M9 17v-2a2 2 0 00-2-2H5a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2zm10-4a2 2 0 100-4 2 2 0 000 4zM3 13a2 2 0 100-4 2 2 0 000 4zm10-4a2 2 0 100-4 2 2 0 000 4z" />;
+const ProductionIcon = () => <Icon path="M10 20l-5.5-5.5a8 8 0 1111 0L10 20zM10 12a2 2 0 100-4 2 2 0 000 4z" />;
+const WarehouseIcon = () => <Icon path="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />;
+const AnalyticsIcon = () => <Icon path="M7.225 4.025a.75.75 0 01.25-.53l3-3a.75.75 0 011.05 1.05l-2.47 2.47 2.47 2.47a.75.75 0 11-1.05 1.05l-3-3a.75.75 0 01-.25-.53zM12.775 15.975a.75.75 0 01-.25.53l-3 3a.75.75 0 01-1.05-1.05l2.47-2.47-2.47-2.47a.75.75 0 111.05-1.05l3 3a.75.75 0 01.25.53z" />;
+const SettingsIcon = () => <Icon path="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066 2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065zM15 12a3 3 0 11-6 0 3 3 0 016 0z" />;
+
+interface NavItem {
+  key: TranslationKey;
+  path: string;
+  icon: React.ReactNode;
+  children?: NavItem[];
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
+const navItems: NavItem[] = [
+  { key: 'dashboard_title', path: '/', icon: <DashboardIcon /> },
+  {
+    key: 'salesAndPlanning', path: '/sales', icon: <SalesIcon />,
+    children: [
+      { key: 'customerManagement', path: '/customers', icon: <></> },
+      { key: 'productionPlanning', path: '/production-schedule', icon: <></> },
+    ],
+  },
+  {
+    key: 'productionLine', path: '/production', icon: <ProductionIcon />,
+    children: [
+       { key: 'machineStatus', path: '/machines', icon: <></> },
+       { key: 'kanban', path: '/kanban', icon: <></> },
+       { key: 'productionLogs', path: '/logs', icon: <></> },
+    ]
+  },
+  {
+      key: 'warehouseAndDispatch', path: '/warehouse', icon: <WarehouseIcon />,
+      children: [
+        { key: 'qualityControl', path: '/qc', icon: <></> },
+        { key: 'finishedGoods', path: '/finished-goods', icon: <></> },
+      ]
+  },
+  { key: 'analyticsAndReports', path: '/reports', icon: <AnalyticsIcon /> },
+  { key: 'settings', path: '/settings', icon: <SettingsIcon /> },
+];
+
+
+const Sidebar: React.FC = () => {
   const { t } = useTranslation();
+  const [openSections, setOpenSections] = useState<string[]>(['salesAndPlanning']);
+  const location = useLocation();
 
-  const navItems = [
-    { name: t('dashboard_title'), href: '/', icon: <HomeIcon /> },
-    { name: t('productionSchedule'), href: '/production-schedule', icon: <ClipboardListIcon /> },
-    { name: t('reports'), href: '/reports', icon: <ChartBarIcon /> },
-    { name: t('productManagement'), href: '/products', icon: <CubeIcon /> },
-  ];
+  const toggleSection = (key: TranslationKey) => {
+    setOpenSections(prev => 
+      prev.includes(key) ? prev.filter(k => k !== key) : [...prev, key]
+    );
+  };
+  
+  const isParentActive = (item: NavItem) => {
+    return item.children?.some(child => location.pathname.startsWith(child.path)) ?? false;
+  }
 
-  const linkClasses = `flex items-center gap-4 p-3 rounded-lg text-gray-300 hover:bg-slate-700 transition-colors`;
-  const activeLinkClasses = 'bg-slate-700 text-white';
+  const renderNavItem = (item: NavItem, isSubmenu = false) => {
+    if (item.children) {
+      const isOpen = openSections.includes(item.key);
+      const isActive = isParentActive(item);
+      return (
+        <div key={item.key}>
+          <button onClick={() => toggleSection(item.key)} className={`w-full flex justify-between items-center text-left p-2.5 rounded-lg transition-colors ${isActive ? 'text-white' : 'text-gray-400 hover:bg-gray-700'}`}>
+            <div className="flex items-center gap-3">
+              {item.icon}
+              <span className="font-semibold">{t(item.key)}</span>
+            </div>
+            <svg className={`w-4 h-4 transition-transform ${isOpen ? 'rotate-90' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path></svg>
+          </button>
+          <div className={`pl-4 overflow-hidden transition-all duration-300 ease-in-out ${isOpen ? 'max-h-96' : 'max-h-0'}`}>
+            <ul>
+              {item.children.map(child => (
+                <li key={child.key} className="py-1">{renderNavItem(child, true)}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      );
+    }
+
+    const baseClasses = isSubmenu
+      ? 'pl-7 py-2 text-sm rounded-md w-full text-left flex'
+      : 'flex items-center gap-3 p-2.5 rounded-lg';
+
+    return (
+      <NavLink to={item.path} key={item.key} className={({ isActive }) => `${baseClasses} transition-colors ${isActive ? 'bg-green-500 text-white' : 'text-gray-400 hover:bg-gray-700'}`} end>
+        {!isSubmenu && item.icon}
+        <span className={isSubmenu ? 'font-normal' : 'font-semibold'}>{t(item.key)}</span>
+      </NavLink>
+    );
+  };
 
   return (
-    <aside className={`flex-shrink-0 bg-slate-800 p-4 transition-all duration-300 ${isOpen ? 'w-64' : 'w-20'}`}>
-      <div className={`flex items-center gap-3 mb-10 ${isOpen ? 'justify-start' : 'justify-center'}`}>
-        <div className="bg-indigo-600 p-2 rounded-lg">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-          </svg>
-        </div>
-        {isOpen && <h1 className="text-xl font-bold text-white whitespace-nowrap">CT ELECTRIC</h1>}
+    <aside className="w-72 flex-shrink-0 bg-[#1A222B] p-4 flex flex-col h-screen overflow-y-auto">
+      <div className="flex items-center gap-3 mb-6 p-2.5">
+          <img src="https://i.imgur.com/8Q7E0A4.png" alt="CT Electric Logo" className="h-8 w-8 object-contain" />
+        <h1 className="text-xl font-bold text-white">CT.ELECTRIC</h1>
       </div>
-      <nav>
-        <ul>
-          {navItems.map((item) => (
-            <li key={item.href} className="mb-2" title={!isOpen ? item.name : undefined}>
-              <NavLink
-                to={item.href}
-                end
-                className={({ isActive }) => `${linkClasses} ${isActive ? activeLinkClasses : ''}`}
-              >
-                {item.icon}
-                {isOpen && <span className="font-medium whitespace-nowrap">{item.name}</span>}
-              </NavLink>
-            </li>
-          ))}
-        </ul>
+      <div className="relative mb-4">
+        <input type="text" placeholder={t('search')} className="w-full bg-[#2E3740] text-white placeholder-gray-400 rounded-lg py-2 pl-10 pr-4 focus:outline-none" />
+        <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+      </div>
+      <nav className="flex-grow space-y-2">
+        {navItems.map(item => <div key={item.key}>{renderNavItem(item)}</div>)}
       </nav>
+      <div className="mt-auto pt-4 text-center text-xs text-gray-500">
+        CT ELECTRIC © 2025
+      </div>
     </aside>
   );
 };
-
-// SVG Icon Components
-const HomeIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-  </svg>
-);
-const ChartBarIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-  </svg>
-);
-const ClipboardListIcon = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
-    </svg>
-);
-const CubeIcon = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-14L4 7m0 10l8 4m0-14v10" />
-    </svg>
-);
 
 export default Sidebar;
