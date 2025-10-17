@@ -1,4 +1,5 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 import { useTranslation } from '../hooks/useTranslation';
 
 interface SidebarProps {
@@ -9,34 +10,37 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
   const { t } = useTranslation();
 
   const navItems = [
-    { key: 'dashboard', icon: <HomeIcon /> },
-    { key: 'productionSchedule', icon: <CalendarIcon /> },
-    { key: 'reports', icon: <ChartBarIcon /> },
-    { key: 'productManagement', icon: <CubeIcon /> },
+    { name: t('dashboard_title'), href: '/', icon: <HomeIcon /> },
+    { name: t('productionSchedule'), href: '/production-schedule', icon: <ClipboardListIcon /> },
+    { name: t('reports'), href: '/reports', icon: <ChartBarIcon /> },
+    { name: t('productManagement'), href: '/products', icon: <CubeIcon /> },
   ];
 
+  const linkClasses = `flex items-center gap-4 p-3 rounded-lg text-gray-300 hover:bg-slate-700 transition-colors`;
+  const activeLinkClasses = 'bg-slate-700 text-white';
+
   return (
-    <aside className={`fixed top-0 left-0 h-full bg-slate-800 p-4 transition-all duration-300 ease-in-out z-20 hidden md:flex flex-col ${isOpen ? 'w-64' : 'w-20'}`}>
-      <div className={`flex items-center gap-3 mb-10 ${isOpen ? 'p-2' : 'justify-center'}`}>
-        <div className="bg-indigo-600 p-2 rounded-lg flex-shrink-0">
+    <aside className={`flex-shrink-0 bg-slate-800 p-4 transition-all duration-300 ${isOpen ? 'w-64' : 'w-20'}`}>
+      <div className={`flex items-center gap-3 mb-10 ${isOpen ? 'justify-start' : 'justify-center'}`}>
+        <div className="bg-indigo-600 p-2 rounded-lg">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
           </svg>
         </div>
-        <h1 className={`text-2xl font-bold text-white whitespace-nowrap overflow-hidden transition-opacity duration-200 ${isOpen ? 'opacity-100' : 'opacity-0'}`}>CT ELECTRIC</h1>
+        {isOpen && <h1 className="text-xl font-bold text-white whitespace-nowrap">CT ELECTRIC</h1>}
       </div>
-      <nav className="flex-grow">
+      <nav>
         <ul>
-          {navItems.map((item, index) => (
-            <li key={item.key} className="mb-2">
-              <a
-                href="#"
-                title={!isOpen ? t(item.key as any) : undefined}
-                className={`flex items-center gap-4 p-3 rounded-lg text-gray-300 hover:bg-slate-700 transition-colors ${index === 0 ? 'bg-slate-700' : ''} ${!isOpen ? 'justify-center' : ''}`}
+          {navItems.map((item) => (
+            <li key={item.href} className="mb-2" title={!isOpen ? item.name : undefined}>
+              <NavLink
+                to={item.href}
+                end
+                className={({ isActive }) => `${linkClasses} ${isActive ? activeLinkClasses : ''}`}
               >
-                <div className="flex-shrink-0">{item.icon}</div>
-                <span className={`font-medium whitespace-nowrap overflow-hidden transition-opacity ${isOpen ? 'opacity-100 delay-150' : 'opacity-0'}`}>{t(item.key as any)}</span>
-              </a>
+                {item.icon}
+                {isOpen && <span className="font-medium whitespace-nowrap">{item.name}</span>}
+              </NavLink>
             </li>
           ))}
         </ul>
@@ -47,22 +51,22 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
 
 // SVG Icon Components
 const HomeIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
   </svg>
 );
 const ChartBarIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
   </svg>
 );
-const CalendarIcon = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+const ClipboardListIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
     </svg>
 );
 const CubeIcon = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-14L4 7m0 10l8 4m0-14v10" />
     </svg>
 );

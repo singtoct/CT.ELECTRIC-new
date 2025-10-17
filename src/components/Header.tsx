@@ -1,87 +1,41 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React from 'react';
 import { useTranslation } from '../hooks/useTranslation';
-import { Language } from '../i18n/translations';
+import type { Language } from '../i18n/translations';
 
 interface HeaderProps {
-  toggleSidebar: () => void;
+    onToggleSidebar: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ toggleSidebar }) => {
-  const { language, changeLanguage, t } = useTranslation();
-  const [isLangDropdownOpen, setIsLangDropdownOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
+const Header: React.FC<HeaderProps> = ({ onToggleSidebar }) => {
+  const { changeLanguage, language } = useTranslation();
 
-  const languages: Record<Language, string> = {
-    th: 'ภาษาไทย',
-    en: 'English',
-    zh: '中文'
+  const handleLanguageChange = (lang: Language) => {
+    changeLanguage(lang);
   };
 
-  // Close dropdown when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setIsLangDropdownOpen(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
-
   return (
-    <header className="flex items-center justify-between p-6 bg-slate-800 border-b border-slate-700 flex-shrink-0">
-      <div className="flex items-center">
-        <button 
-          onClick={toggleSidebar} 
-          className="text-gray-400 hover:text-white mr-4 p-1 rounded-md focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 hidden md:block"
-          aria-label="Toggle sidebar"
-        >
-          <MenuIcon />
-        </button>
-        <h2 className="text-2xl font-semibold text-white">{t('dashboardOverview')}</h2>
+    <header className="flex-shrink-0 flex items-center justify-between p-4 bg-slate-800 border-b border-slate-700">
+      <div className="flex items-center gap-4">
+          <button onClick={onToggleSidebar} className="p-2 rounded-md text-gray-400 hover:bg-slate-700 hover:text-white transition-colors">
+              <MenuIcon />
+          </button>
+          <div className="relative hidden md:block">
+            {/* The search bar can be re-enabled if needed */}
+          </div>
       </div>
       <div className="flex items-center gap-4">
-        <div className="relative hidden md:block">
-          <input
-            type="text"
-            placeholder="Search..."
-            className="bg-slate-700 text-gray-200 placeholder-gray-400 rounded-full py-2 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          />
-          <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-        </div>
-        
-        <div className="relative" ref={dropdownRef}>
-          <button
-            onClick={() => setIsLangDropdownOpen(!isLangDropdownOpen)}
-            className="text-gray-400 hover:text-white p-1 rounded-md"
-            aria-label="Change language"
-          >
-            <GlobeIcon className="w-6 h-6" />
-          </button>
-          {isLangDropdownOpen && (
-            <div className="absolute right-0 mt-2 w-36 bg-slate-700 rounded-md shadow-lg py-1 z-20 border border-slate-600">
-              {(Object.keys(languages) as Language[]).map(lang => (
-                <a
-                  key={lang}
-                  href="#"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    changeLanguage(lang);
-                    setIsLangDropdownOpen(false);
-                  }}
-                  className={`block px-4 py-2 text-sm ${language === lang ? 'bg-indigo-600 text-white' : 'text-gray-300 hover:bg-slate-600'}`}
-                >
-                  {languages[lang]}
-                </a>
-              ))}
+        {/* Language Switcher */}
+        <div className="relative group">
+            <button className="p-2 rounded-md text-gray-400 hover:bg-slate-700 hover:text-white transition-colors">
+                <GlobeIcon />
+            </button>
+            <div className="absolute right-0 mt-2 w-32 bg-slate-700 rounded-md shadow-lg py-1 z-10 hidden group-hover:block">
+                <a onClick={() => handleLanguageChange('th')} className={`block px-4 py-2 text-sm cursor-pointer ${language === 'th' ? 'bg-indigo-600 text-white' : 'text-gray-300 hover:bg-slate-600'}`}>ภาษาไทย</a>
+                <a onClick={() => handleLanguageChange('en')} className={`block px-4 py-2 text-sm cursor-pointer ${language === 'en' ? 'bg-indigo-600 text-white' : 'text-gray-300 hover:bg-slate-600'}`}>English</a>
+                <a onClick={() => handleLanguageChange('zh')} className={`block px-4 py-2 text-sm cursor-pointer ${language === 'zh' ? 'bg-indigo-600 text-white' : 'text-gray-300 hover:bg-slate-600'}`}>中文</a>
             </div>
-          )}
         </div>
-
         <BellIcon className="w-6 h-6 text-gray-400 hover:text-white cursor-pointer" />
-        
         <div className="flex items-center gap-3 cursor-pointer">
           <img
             src="https://picsum.photos/40"
@@ -98,23 +52,17 @@ const Header: React.FC<HeaderProps> = ({ toggleSidebar }) => {
   );
 };
 
-const GlobeIcon: React.FC<{className: string}> = ({ className }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2h8a2 2 0 002-2v-1a2 2 0 012-2h1.945M7.707 4.293l.586-.586a2 2 0 012.828 0l.586.586m-3.414 0l-2.293 2.293m5 5l2.293-2.293m-5 5a5.002 5.002 0 01-5-5c0-1.32.464-2.54 1.227-3.518M15 10a5.002 5.002 0 01-5 5c-1.32 0-2.54-.464-3.518-1.227M15 10V7a2 2 0 00-2-2h-1a2 2 0 00-2 2v3m4 0a5.002 5.002 0 00-5-5" />
-  </svg>
+const MenuIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+    </svg>
 );
 
-const MenuIcon: React.FC = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h7" />
-  </svg>
-);
-
-const SearchIcon: React.FC<{className: string}> = ({ className }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-  </svg>
-);
+const GlobeIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9V3m0 18a9 9 0 00-9-9m-9 9a9 9 0 019-9" />
+    </svg>
+)
 
 const BellIcon: React.FC<{className: string}> = ({ className }) => (
   <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
