@@ -16,6 +16,7 @@ export const translations = {
 
     // Production Schedule Page
     allProductionOrders: 'All Production Orders',
+    searchByProductName: 'Search by product name...',
     
     // Shared Table Headers
     productName: 'Product Name',
@@ -52,6 +53,7 @@ export const translations = {
     
     // Production Schedule Page
     allProductionOrders: 'รายการคำสั่งผลิตทั้งหมด',
+    searchByProductName: 'ค้นหาด้วยชื่อสินค้า...',
 
     // Shared Table Headers
     productName: 'ชื่อสินค้า',
@@ -88,6 +90,7 @@ export const translations = {
 
     // Production Schedule Page
     allProductionOrders: '所有生产订单',
+    searchByProductName: '按产品名称搜索...',
 
     // Shared Table Headers
     productName: '产品名称',
