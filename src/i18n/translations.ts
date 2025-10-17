@@ -1,0 +1,47 @@
+export const translations = {
+  th: {
+    dashboard: 'ภาพรวมระบบ',
+    productionSchedule: 'ตารางการผลิต',
+    reports: 'รายงาน',
+    productManagement: 'จัดการสินค้า',
+    aiForecast: 'AI พยากรณ์แผนการผลิต',
+    qcTasks: 'งานตรวจสอบ (QC)',
+    upcomingOrders: 'การผลิตที่ออกคำสั่งล่วงหน้า',
+    productName: 'ชื่อสินค้า',
+    quantity: 'จำนวน',
+    dueDate: 'วันที่กำหนดส่ง',
+    dashboardOverview: 'ภาพรวมแดชบอร์ด',
+    latest7DaysQuantity: 'สรุปปริมาณสินค้า 7 วันล่าสุด',
+  },
+  en: {
+    dashboard: 'Dashboard',
+    productionSchedule: 'Production Schedule',
+    reports: 'Reports',
+    productManagement: 'Product Management',
+    aiForecast: 'AI Production Forecast',
+    qcTasks: 'QC Tasks',
+    upcomingOrders: 'Upcoming Orders',
+    productName: 'Product Name',
+    quantity: 'Quantity',
+    dueDate: 'Due Date',
+    dashboardOverview: 'Dashboard Overview',
+    latest7DaysQuantity: 'Last 7 Days Quantity Summary',
+  },
+  zh: {
+    dashboard: '仪表板',
+    productionSchedule: '生产计划',
+    reports: '报告',
+    productManagement: '产品管理',
+    aiForecast: '人工智能生产预测',
+    qcTasks: '质检任务',
+    upcomingOrders: '待处理订单',
+    productName: '产品名称',
+    quantity: '数量',
+    dueDate: '截止日期',
+    dashboardOverview: '仪表板概览',
+    latest7DaysQuantity: '最近7天数量总结',
+  },
+};
+
+export type Language = keyof typeof translations;
+export type TranslationKey = keyof typeof translations.en;

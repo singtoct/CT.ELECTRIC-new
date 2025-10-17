@@ -1,16 +1,17 @@
+// FIX: Imported React to resolve the 'Cannot find namespace React' error for React.ReactNode type.
+import React from 'react';
 
 export interface Stat {
   title: string;
   value: string;
-  change: string;
-  changeType: 'increase' | 'decrease';
+  change?: string;
+  changeType?: 'increase' | 'decrease';
   icon: React.ReactNode;
 }
 
-export interface SalesData {
+export interface DailyQuantity {
   name: string;
-  revenue: number;
-  profit: number;
+  quantity: number;
 }
 
 export interface PackingOrder {
@@ -23,13 +24,12 @@ export interface PackingOrder {
   dueDate: string;
   salePrice: number;
   lotNumber?: string;
-  // FIX: Added 'Pending' to the status type to match its usage in RecentOrdersTable.tsx and resolve the type error.
   status?: 'Open' | 'Completed' | 'Cancelled' | 'Pending';
   quantityDelivered?: number;
 }
 
 export interface DashboardData {
     stats: Stat[];
-    salesData: SalesData[];
+    salesData: DailyQuantity[];
     orders: PackingOrder[];
 }

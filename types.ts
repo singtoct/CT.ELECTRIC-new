@@ -1,3 +1,5 @@
+// FIX: Imported React to resolve the 'Cannot find namespace React' error for React.ReactNode type.
+import React from 'react';
 
 export interface Stat {
   title: string;

@@ -1,15 +1,18 @@
 import React from 'react';
+import { useTranslation } from '../hooks/useTranslation';
 
 interface SidebarProps {
   isOpen: boolean;
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
+  const { t } = useTranslation();
+
   const navItems = [
-    { name: 'ภาพรวมระบบ', icon: <HomeIcon /> },
-    { name: 'ตารางการผลิต', icon: <CalendarIcon /> },
-    { name: 'รายงาน', icon: <ChartBarIcon /> },
-    { name: 'จัดการสินค้า', icon: <CubeIcon /> },
+    { key: 'dashboard', icon: <HomeIcon /> },
+    { key: 'productionSchedule', icon: <CalendarIcon /> },
+    { key: 'reports', icon: <ChartBarIcon /> },
+    { key: 'productManagement', icon: <CubeIcon /> },
   ];
 
   return (
@@ -25,14 +28,14 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
       <nav className="flex-grow">
         <ul>
           {navItems.map((item, index) => (
-            <li key={item.name} className="mb-2">
+            <li key={item.key} className="mb-2">
               <a
                 href="#"
-                title={!isOpen ? item.name : undefined}
+                title={!isOpen ? t(item.key as any) : undefined}
                 className={`flex items-center gap-4 p-3 rounded-lg text-gray-300 hover:bg-slate-700 transition-colors ${index === 0 ? 'bg-slate-700' : ''} ${!isOpen ? 'justify-center' : ''}`}
               >
                 <div className="flex-shrink-0">{item.icon}</div>
-                <span className={`font-medium whitespace-nowrap overflow-hidden transition-opacity ${isOpen ? 'opacity-100 delay-150' : 'opacity-0'}`}>{item.name}</span>
+                <span className={`font-medium whitespace-nowrap overflow-hidden transition-opacity ${isOpen ? 'opacity-100 delay-150' : 'opacity-0'}`}>{t(item.key as any)}</span>
               </a>
             </li>
           ))}

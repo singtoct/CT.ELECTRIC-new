@@ -1,4 +1,3 @@
-
 import React from 'react';
 import type { Stat } from '../types';
 
@@ -11,10 +10,12 @@ const StatCard: React.FC<Stat> = ({ title, value, change, changeType, icon }) =>
       <div>
         <p className="text-sm font-medium text-gray-400 uppercase">{title}</p>
         <p className="text-3xl font-bold text-white mt-2">{value}</p>
-        <div className="flex items-center mt-2">
-          <span className={`text-sm font-semibold ${changeColor}`}>{change}</span>
-          <span className="text-xs text-gray-500 ml-2">from last month</span>
-        </div>
+        {change && changeType && (
+          <div className="flex items-center mt-2">
+            <span className={`text-sm font-semibold ${changeColor}`}>{change}</span>
+            <span className="text-xs text-gray-500 ml-2">from last month</span>
+          </div>
+        )}
       </div>
       <div className="bg-slate-700 p-3 rounded-lg text-indigo-400">
         {icon}

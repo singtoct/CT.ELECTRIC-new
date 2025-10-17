@@ -1,10 +1,35 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import { useTranslation } from '../hooks/useTranslation';
+import { Language } from '../i18n/translations';
 
 interface HeaderProps {
   toggleSidebar: () => void;
 }
 
 const Header: React.FC<HeaderProps> = ({ toggleSidebar }) => {
+  const { language, changeLanguage, t } = useTranslation();
+  const [isLangDropdownOpen, setIsLangDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const languages: Record<Language, string> = {
+    th: 'ภาษาไทย',
+    en: 'English',
+    zh: '中文'
+  };
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsLangDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
   return (
     <header className="flex items-center justify-between p-6 bg-slate-800 border-b border-slate-700 flex-shrink-0">
       <div className="flex items-center">
@@ -15,9 +40,9 @@ const Header: React.FC<HeaderProps> = ({ toggleSidebar }) => {
         >
           <MenuIcon />
         </button>
-        <h2 className="text-2xl font-semibold text-white">Dashboard Overview</h2>
+        <h2 className="text-2xl font-semibold text-white">{t('dashboardOverview')}</h2>
       </div>
-      <div className="flex items-center gap-6">
+      <div className="flex items-center gap-4">
         <div className="relative hidden md:block">
           <input
             type="text"
@@ -26,7 +51,37 @@ const Header: React.FC<HeaderProps> = ({ toggleSidebar }) => {
           />
           <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
         </div>
+        
+        <div className="relative" ref={dropdownRef}>
+          <button
+            onClick={() => setIsLangDropdownOpen(!isLangDropdownOpen)}
+            className="text-gray-400 hover:text-white p-1 rounded-md"
+            aria-label="Change language"
+          >
+            <GlobeIcon className="w-6 h-6" />
+          </button>
+          {isLangDropdownOpen && (
+            <div className="absolute right-0 mt-2 w-36 bg-slate-700 rounded-md shadow-lg py-1 z-20 border border-slate-600">
+              {(Object.keys(languages) as Language[]).map(lang => (
+                <a
+                  key={lang}
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    changeLanguage(lang);
+                    setIsLangDropdownOpen(false);
+                  }}
+                  className={`block px-4 py-2 text-sm ${language === lang ? 'bg-indigo-600 text-white' : 'text-gray-300 hover:bg-slate-600'}`}
+                >
+                  {languages[lang]}
+                </a>
+              ))}
+            </div>
+          )}
+        </div>
+
         <BellIcon className="w-6 h-6 text-gray-400 hover:text-white cursor-pointer" />
+        
         <div className="flex items-center gap-3 cursor-pointer">
           <img
             src="https://picsum.photos/40"
@@ -42,6 +97,12 @@ const Header: React.FC<HeaderProps> = ({ toggleSidebar }) => {
     </header>
   );
 };
+
+const GlobeIcon: React.FC<{className: string}> = ({ className }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2h8a2 2 0 002-2v-1a2 2 0 012-2h1.945M7.707 4.293l.586-.586a2 2 0 012.828 0l.586.586m-3.414 0l-2.293 2.293m5 5l2.293-2.293m-5 5a5.002 5.002 0 01-5-5c0-1.32.464-2.54 1.227-3.518M15 10a5.002 5.002 0 01-5 5c-1.32 0-2.54-.464-3.518-1.227M15 10V7a2 2 0 00-2-2h-1a2 2 0 00-2 2v3m4 0a5.002 5.002 0 00-5-5" />
+  </svg>
+);
 
 const MenuIcon: React.FC = () => (
   <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
